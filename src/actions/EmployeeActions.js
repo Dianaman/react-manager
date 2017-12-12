@@ -4,7 +4,8 @@ import {
 	EMPLOYEE_UPDATE, 
 	EMPLOYEE_CREATE, 
 	EMPLOYEES_FETCH_SUCCESS,
-	EMPLOYEE_MESSAGE
+	EMPLOYEE_MESSAGE,
+	EMPLOYEE_DELETE
 } from './types';
 
 export const employeeUpdate = ({ prop, value }) => {
@@ -46,6 +47,19 @@ export const employeeSave = (name, phone, shift, uid) => {
 	return (dispatch) => {
 		firebase.database().ref(`users/${currentUser.uid}/employees/${uid}`)
 			.set({name, phone, shift})
+			.then(()=> {
+				dispatch({type: EMPLOYEE_CREATE});
+				Actions.employeeList({type:'reset'});
+			});
+	}
+}
+
+export const employeeDelete = (uid) => {
+	const { currentUser } = firebase.auth();
+
+	return (dispatch) => {
+		firebase.database().ref(`users/${currentUser.uid}/employees/${uid}`)
+			.remove()
 			.then(()=> {
 				dispatch({type: EMPLOYEE_CREATE});
 				Actions.employeeList({type:'reset'});

@@ -1,11 +1,24 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Card, CardSection, Input, Button, SelectInput } from './common';
+import { Card, CardSection, Input, Button, SelectInput, Confirm } from './common';
 import { connect } from 'react-redux';
-import { employeeUpdate, employeeCreate, employeeSave } from '../actions';
+import { employeeUpdate, employeeCreate, employeeSave, employeeDelete } from '../actions';
 
 class EmployeeCreate extends Component {
-	onButtonPress(){
+	constructor(){
+		super();
+		this.state = { showFireModal: false };
+	}
+
+	componentWillMount(){
+		if(this.props.employee){
+			_.each(this.props.employee, (value, prop) =>{
+				this.props.employeeUpdate({prop, value});
+			});
+		}
+	}
+
+	onSavePress(){
 		if(this.props.employee){
 			this.props.employeeSave(
 				this.props.name,
@@ -22,11 +35,27 @@ class EmployeeCreate extends Component {
 		}
 	}
 
-	componentWillMount(){
+	onFirePress(){
+		this.setState({showFireModal: true});
+	}
+
+	onAccept(){
+		this.props.employeeDelete(this.props.employee.uid);
+	}
+
+	onDecline(){
+		this.setState({showFireModal:false});
+	}
+
+	renderFire(){
 		if(this.props.employee){
-			_.each(this.props.employee, (value, prop) =>{
-				this.props.employeeUpdate({prop, value});
-			});
+			return(
+				<CardSection>
+					<Button whenPress={this.onFirePress.bind(this)}>
+						Fire
+					</Button>
+				</CardSection>
+			);
 		}
 	}
 
@@ -58,10 +87,20 @@ class EmployeeCreate extends Component {
 					/>
 				</CardSection>
 				<CardSection>
-					<Button whenPress={this.onButtonPress.bind(this)}>
-						Create
+					<Button whenPress={this.onSavePress.bind(this)}>
+						Save
 					</Button>
 				</CardSection>
+				
+				{this.renderFire()}
+				
+				<Confirm
+					visible={this.state.showFireModal}
+					onAccept={this.onAccept.bind(this)}
+					onDecline={this.onDecline.bind(this)}
+				>
+					Are you sure you want to fire this employee?
+				</Confirm>
 			</Card>
 		);
 	}
@@ -98,4 +137,4 @@ const mapStateToProps = (state) => {
 	};
 }
 
-export default connect(mapStateToProps, { employeeUpdate, employeeCreate, employeeSave })(EmployeeCreate);
+export default connect(mapStateToProps, { employeeUpdate, employeeCreate, employeeSave, employeeDelete })(EmployeeCreate);
