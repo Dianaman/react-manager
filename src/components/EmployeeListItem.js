@@ -3,9 +3,9 @@ import { Text, View, TouchableWithoutFeedback } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { CardSection } from './common';
 
-class ListItem extends Component {
+class EmployeeListItem extends Component {
 	goToEdit(){
-		Actions.employeeCreate({employee: this.props.employee});
+		Actions.employeeAdmin({employee: this.props.employee});
 	}
 
 	messageEmployee(){
@@ -40,4 +40,4 @@ const styles = {
 	}
 }
 
-export default ListItem;
+export default EmployeeListItem;

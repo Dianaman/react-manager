@@ -4,7 +4,7 @@ import { Card, CardSection, Input, Button, SelectInput, Confirm } from './common
 import { connect } from 'react-redux';
 import { employeeUpdate, employeeCreate, employeeSave, employeeDelete } from '../actions';
 
-class EmployeeCreate extends Component {
+class EmployeeAdmin extends Component {
 	constructor(){
 		super();
 		this.state = { showFireModal: false };
@@ -137,4 +137,4 @@ const mapStateToProps = (state) => {
 	};
 }
 
-export default connect(mapStateToProps, { employeeUpdate, employeeCreate, employeeSave, employeeDelete })(EmployeeCreate);
+export default connect(mapStateToProps, { employeeUpdate, employeeCreate, employeeSave, employeeDelete })(EmployeeAdmin);
