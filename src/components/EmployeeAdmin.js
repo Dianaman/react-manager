@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { Card, CardSection, Input, Button, SelectInput, Confirm } from './common';
 import { connect } from 'react-redux';
-import { employeeUpdate, employeeCreate, employeeSave, employeeDelete } from '../actions';
+import { employeeFieldUpdate, employeeCreate, employeeSave, employeeDelete } from '../actions';
 
 class EmployeeAdmin extends Component {
 	constructor(){
@@ -13,7 +13,7 @@ class EmployeeAdmin extends Component {
 	componentWillMount(){
 		if(this.props.employee){
 			_.each(this.props.employee, (value, prop) =>{
-				this.props.employeeUpdate({prop, value});
+				this.props.employeeFieldUpdate({prop, value});
 			});
 		}
 	}
@@ -67,7 +67,7 @@ class EmployeeAdmin extends Component {
 						label="Name"
 						placeholder="Maria Alejandra Romero"
 						value={this.props.name}
-						onChangeText={ value => this.props.employeeUpdate({prop: 'name', value}) }
+						onChangeText={ value => this.props.employeeFieldUpdate({prop: 'name', value}) }
 					/>
 				</CardSection>
 				<CardSection>
@@ -75,14 +75,14 @@ class EmployeeAdmin extends Component {
 						label="Phone"
 						placeholder="011 4335 3355"
 						value={this.props.phone}
-						onChangeText={ value => this.props.employeeUpdate({prop: 'phone', value}) }
+						onChangeText={ value => this.props.employeeFieldUpdate({prop: 'phone', value}) }
 					/>
 				</CardSection>
 				<CardSection>
 					<SelectInput
 						label="Shift"
 						selectedValue={this.props.shift}
-						onValueChange={value=>this.props.employeeUpdate({prop:'shift', value})}
+						onValueChange={value=>this.props.employeeFieldUpdate({prop:'shift', value})}
 						items={DAYS}
 					/>
 				</CardSection>
@@ -137,4 +137,4 @@ const mapStateToProps = (state) => {
 	};
 }
 
-export default connect(mapStateToProps, { employeeUpdate, employeeCreate, employeeSave, employeeDelete })(EmployeeAdmin);
+export default connect(mapStateToProps, { employeeFieldUpdate, employeeCreate, employeeSave, employeeDelete })(EmployeeAdmin);
